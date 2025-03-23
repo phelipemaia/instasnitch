@@ -3,7 +3,7 @@ import { FollowerRAW, FollowingRAW, Profile, Snitch } from "./service/Snitch";
 export type FormReturn = {
   notFollowingBack: Profile[];
   error?: string;
-}
+};
 
 export async function saveData(formData: FormData): Promise<FormReturn> {
   const followersFile = formData.get("followers") as File;
@@ -11,13 +11,13 @@ export async function saveData(formData: FormData): Promise<FormReturn> {
   let notFollowingBack: Profile[] = [];
 
   if (!followersFile || !followingFile) {
-    return { notFollowingBack, error: 'Invalid files' };
-  }    
+    return { notFollowingBack, error: "Invalid files" };
+  }
 
-  const decoder = new TextDecoder('utf-8');
+  const decoder = new TextDecoder("utf-8");
   let followersFileContent: FollowerRAW[];
   let followingFileContent: FollowingRAW;
-  
+
   try {
     const followersFileBuffer = await followersFile.arrayBuffer();
     const followersFileString = decoder.decode(followersFileBuffer);
@@ -28,24 +28,25 @@ export async function saveData(formData: FormData): Promise<FormReturn> {
     followingFileContent = JSON.parse(followingFileString);
 
     if (!Array.isArray(followersFileContent)) {
-      throw new Error('Invalid follower JSON');
+      throw new Error("Invalid follower JSON");
     }
 
     if (!Array.isArray(followingFileContent.relationships_following)) {
-      throw new Error('Invalid following JSON');
+      throw new Error("Invalid following JSON");
     }
 
     const snitch = new Snitch(followersFileContent, followingFileContent);
 
     console.log(`Total followers: ${followersFileContent.length}`);
-    console.log(`Total following: ${followingFileContent.relationships_following.length}`);
-    
-    notFollowingBack = snitch.check();
+    console.log(
+      `Total following: ${followingFileContent.relationships_following.length}`,
+    );
 
+    notFollowingBack = snitch.check();
   } catch (err) {
     if (err instanceof SyntaxError) {
       console.log(err);
-      return { notFollowingBack, error: 'Invalid file format' };
+      return { notFollowingBack, error: "Invalid file format" };
     }
   }
 
