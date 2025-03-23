@@ -7,7 +7,7 @@ export default function ComparatorResult({ result }: { result: Profile[] }) {
     <ul>
       {result.map(element => {
         return (<li key={element.name}>
-          {element.name}
+          <a href={element.href}>{element.name}</a>
           </li>)
       })}
     </ul>
