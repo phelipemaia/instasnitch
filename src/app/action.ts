@@ -6,6 +6,7 @@ export type FormReturn = {
 };
 
 export async function saveData(formData: FormData): Promise<FormReturn> {
+  console.log('aquiii')
   const followersFile = formData.get("followers") as File;
   const followingFile = formData.get("following") as File;
   let notFollowingBack: Profile[] = [];

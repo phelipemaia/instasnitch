@@ -1,9 +1,12 @@
 "use client";
-import { useFormStatus } from "react-dom";
 
-export default function Submit() {
+import React from 'react';
+import { useFormStatus } from "react-dom";
+import Button from '@mui/material/Button';
+
+export default function Submit({ label }: { label: string } = { label: 'Submit' }) {
   const { pending } = useFormStatus();
   return (
-    <button disabled={pending}>{pending ? "Submitting" : "Submit"}</button>
+    <Button type='submit' disabled={pending}>{label}</Button>
   );
 }

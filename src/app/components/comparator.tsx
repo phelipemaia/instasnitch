@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
+import Grid from '@mui/material/Grid';
 
 import { saveData } from "../action";
 import UploadForm from "./upload-form";
@@ -11,18 +12,24 @@ export default function Comparator() {
   async function formAction(formData: FormData) {
     const { notFollowingBack, error } = await saveData(formData);
     if (notFollowingBack && error) {
-      console.log("erro");
+      console.log("erro", error);
     } else {
       setNotFollowingBack(notFollowingBack);
     }
   }
 
+console.log(notFollowingBack)
+
   return (
-    <>
-      <ComparatorResult result={notFollowingBack} />
-      <form action={formAction}>
-        <UploadForm />
-      </form>
-    </>
+    <Grid container spacing={2} direction="column">
+      <Grid display="flex" justifyContent="center" alignItems="center" size="grow">
+        {notFollowingBack.length > 0 && <ComparatorResult result={notFollowingBack} />}
+      </Grid>
+      <Grid display="flex" justifyContent="center" alignItems="center" size="grow">
+        <form action={formAction}>
+          <UploadForm />
+        </form>
+      </Grid>
+    </Grid>
   );
 }
